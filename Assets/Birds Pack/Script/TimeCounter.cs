@@ -9,11 +9,9 @@ public class TimeCounter : MonoBehaviour
 	//　トータル制限時間
 	private float totalTime;
 	//　制限時間（分）
-	[SerializeField]
-	private int minute;
+	private int minute = 0;
 	//　制限時間（秒）
-	[SerializeField]
-	private float seconds;
+	private float seconds = 60.0f;
 	//ゲームオーバー文字
 	[SerializeField]
 	Text moji;

@@ -12,10 +12,10 @@ public class GameRestart : MonoBehaviour
     public Text total;　　//合計文字
     public Text comment;
     public Text come; //余計な一言
+    public Text highScoreText; //ハイスコア文字
 
     [SerializeField]
     private Text scorePoint; //結果合計
-    // Start is called before the first frame update
 
     //音楽
     public AudioClip sound1;　//三(卍^o^)卍ﾄﾞｩﾙﾙﾙﾙ
@@ -26,63 +26,76 @@ public class GameRestart : MonoBehaviour
     {
         audioSource = GetComponent<AudioSource>();
         audioSource.PlayOneShot(sound1);
+        StartCoroutine( Points() );
+        StartCoroutine(Restat());
+        StartCoroutine(CharaComment());
     }
-
-    // Update is called once per frame
     void Update()
     {
-        
-        Invoke(nameof(Restat), 8.5f);
-        Invoke(nameof(Points), 3.0f);
-        Invoke(nameof(CharaComment), 4.0f);
-        
+        if (Input.GetMouseButtonDown(0)) //左ボタン
+        {
+            //Debug.Log("Tap");
+            SceneManager.LoadScene("Title");
+        }
     }
 
-    void Points()
+
+    private IEnumerator Points()
     {
+        yield return new WaitForSeconds( 3.0f );
         total.text = "合計ポイント";
         scorePoint.text = ScoreScript.score.ToString() + "point";
         audioSource.PlayOneShot(sound2);
     }
-    void CharaComment()
+    private IEnumerator CharaComment()
     {
-        
-        if (ScoreScript.score <= 3000)
+        yield return new WaitForSeconds(4.0f);
+        if (ScoreScript.score <= 10000)
         {
-            comment.text = "あなたのランク：ビギナー";
-            come.text = "人類は滅亡した";
+            comment.text = "あなたのランク\nビギナー";
+            come.text = "き、今日は釣れない日\nだったんだよ‼‼";
             
         }
-        else if (ScoreScript.score <= 7000)
+        else if (ScoreScript.score <= 30000)
         {
             come.color = new Color(0.0f, 0.1f, 1.0f, 1.0f);
-            comment.text = "あなたのランク：アマチュア";
-            come.text = "大変よくできました！！";
+            comment.text = "あなたのランク\nアマチュア";
+            come.text = "やったー！\nいっぱい釣れたね！！";
         }
-        else if (ScoreScript.score <= 15000)
+        else if (ScoreScript.score <= 50000)
         {
             come.color = new Color(1.0f, 0.0f, 1.0f, 1.0f);
-            comment.text = "あなたのランク：プロ";　
-            come.text = "すっご～い！\n君はパズルゲームが得意な\nフレンズなんだね！！";
+            comment.text = "あなたのランク\nプロ";　
+            come.text = "すっご～い！\n君は釣りが得意な\nフレンズなんだね！！";
+        }
+        else if (ScoreScript.score <= 100000)
+        {
+            come.color = new Color(1.0f, 0.0f, 1.0f, 1.0f);
+            comment.text = "あなたのランク\nレジェンド";
+            come.text = "今日は大量だーーー‼‼‼‼！！";
         }
         else
         {
-            comment.text = "あなたのランク：レジェンド";
-            come.text = "いや、やばすぎwwwwwwww\nwwwwwwwwwwwwww";
+            comment.text = "あなたのランク\n神";
+            come.text = "世界中の魚を\n釣りで支配しました";
 
             
         }
+        highScoreText.text = "ハイスコア\n" + ScoreScript.highScore.ToString() + "point";
+        PlayerPrefs.SetInt("HighScore", ScoreScript.highScore);
+        PlayerPrefs.Save();
     }
 
-    void Restat()
+    private IEnumerator Restat()
     {
+        yield return new WaitForSeconds(7.0f);
         reset.text = "タップでタイトルへ戻る";
         if (Input.GetMouseButtonDown(0)) //左ボタン
         {
             SceneManager.LoadScene("Title");
         }
+        
     }
-
     
 
 

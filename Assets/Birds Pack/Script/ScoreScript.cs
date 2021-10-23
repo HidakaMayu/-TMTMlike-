@@ -6,6 +6,7 @@ public class ScoreScript : MonoBehaviour
 {
 
 	public static int score;
+	public static int highScore; //ハイスコア
 
 	void Start()
 	{
@@ -13,8 +14,20 @@ public class ScoreScript : MonoBehaviour
 	//初期スコア(0点)を表示
 	GetComponent<Text>().text = "Score: " + score.ToString();
 	}
-	//ballScriptからSendMessageで呼ばれるスコア加算用メソッド
-	public void AddPoint(int point)
+
+    private void Update()
+    {
+		if (score > highScore)
+		{
+			highScore = score;
+
+			//ハイスコア更新
+		}
+	}
+
+
+    //ballScriptからSendMessageで呼ばれるスコア加算用メソッド
+    public void AddPoint(int point)
 	{
 		score += point;
 		GetComponent<Text>().text = "Score: " + score.ToString();
